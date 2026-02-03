@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Shreya ❤️</title>
+
+<!-- Cute handwritten font -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background:
+      radial-gradient(circle at 20% 30%, #ffd1dc 12%, transparent 13%),
+      radial-gradient(circle at 80% 40%, #ffb6c1 12%, transparent 13%),
+      radial-gradient(circle at 50% 80%, #ffc0cb 12%, transparent 13%),
+      linear-gradient(135deg, #ffe4ec, #ffd6e8);
+    background-size: 140px 140px, 160px 160px, 180px 180px, cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  h1 {
+    color: #8b1c4a;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 12px 28px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 10px;
+    font-family: 'Pacifico', cursive;
+  }
+
+  #yes {
+    background: #ff5c8a;
+    color: white;
+  }
+
+  #no {
+    background: #bbb;
+    color: white;
+    position: absolute;
+  }
+
+  /* Birds scene */
+  .scene {
+    position: relative;
+    width: 100vw;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .bird {
+    position: absolute;
+    font-size: 4.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    animation-fill-mode: forwards;
+  }
+
+  .left {
+    left: -120px;
+    animation: flyLeft 3s ease-out forwards;
+  }
+
+  .right {
+    right: -120px;
+    animation: flyRight 3s ease-out forwards;
+  }
+
+  @keyframes flyLeft {
+    to { left: 50%; transform: translate(-60%, -50%); }
+  }
+
+  @keyframes flyRight {
+    to { right: 50%; transform: translate(60%, -50%); }
+  }
+
+  .kiss {
+    animation: kiss 1.2s infinite alternate;
+  }
+
+  @keyframes kiss {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+  }
+
+  /* Heart balloons */
+  .heart {
+    position: fixed;
+    bottom: -30px;
+    color: #ff4f8b;
+    font-size: 26px;
+    animation: floatUp 6s linear forwards;
+    opacity: 0.85;
+  }
+
+  @keyframes floatUp {
+    to {
+      transform: translateY(-120vh);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div id="container">
+  <h1 id="question">Shreya ❤️<br>Will you be my Valentine?</h1>
+  <button id="yes">Yes ❤️</button>
+  <button id="no">No 😅</button>
+</div>
+
+<!-- AUDIO (must stay outside content replacement) -->
+<audio id="loveSong" src="song.mp3" preload="auto"></audio>
+
+<script>
+  const questions = [
+    "Shreya ❤️<br>Will you be my Valentine?",
+    "Really? 🥺",
+    "Please think again 😭",
+    "Don’t break my heart 💔",
+    "Last chance 😢"
+  ];
+
+  let step = 0;
+
+  const questionEl = document.getElementById("question");
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const song = document.getElementById("loveSong");
+
+  noBtn.addEventListener("click", () => {
+    step++;
+    if (step < questions.length) {
+      questionEl.innerHTML = questions[step];
+      noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
+    const container = document.getElementById("container");
+
+    container.innerHTML = `
+      <div>
+        <div class="scene">
+          <div class="bird left">🐦</div>
+          <div class="bird right">🐦</div>
+        </div>
+        <h1>They found each other 💕<br>Happy Valentine’s Day Shreya ❤️</h1>
+      </div>
+    `;
+
+    // PLAY MUSIC (safe: user already clicked)
+    song.volume = 0.6;
+    song.currentTime = 0;
+    song.play().catch(() => {});
+
+    // Start kiss animation after birds meet
+    setTimeout(() => {
+      document.querySelectorAll('.bird').forEach(b => b.classList.add('kiss'));
+    }, 3000);
+
+    // Floating hearts
+    setInterval(createHeart, 450);
+  });
+
+  function createHeart() {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = Math.random() * 18 + 22 + "px";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 6000);
+  }
+</script>
+
+</body>
+</html>
